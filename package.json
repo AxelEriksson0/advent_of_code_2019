@@ -1,0 +1,28 @@
+{
+  "name": "advent_of_code_2019",
+  "version": "1.0.0",
+  "description": "My solutions to Advent of Code 2019. I'll be doing them in JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AxelEriksson0/advent_of_code_2019.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AxelEriksson0/advent_of_code_2019/issues"
+  },
+  "homepage": "https://github.com/AxelEriksson0/advent_of_code_2019#readme",
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  }
+}
