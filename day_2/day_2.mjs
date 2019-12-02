@@ -3,6 +3,15 @@ import fs from 'fs'
 const input = fs.readFileSync('./day_2_input', 'utf8')
 const originalProgramCodes = input.toString().split(',').map(Number)
 
+const nouns = [...Array(100).keys()]
+const verbs = [...Array(100).keys()]
+
+nouns.forEach(noun => {
+  verbs.forEach(verb => {
+    runProgram([...originalProgramCodes], noun, verb)
+  })
+})
+
 const runProgram = (programCodes, noun, verb) => {
   programCodes[1] = noun
   programCodes[2] = verb
@@ -26,20 +35,8 @@ const runProgram = (programCodes, noun, verb) => {
 
   if (programCodes[0] === 19690720) {
     console.log(`You found the solution!
-    ProgramCodes[0] = ${programCodes[0]}
-    Noun = ${noun}
-    Verb = ${verb}
+Noun = ${noun}
+Verb = ${verb}
     `)
   }
 }
-
-const nouns = Array.from(Array(10000).keys())
-const verbs = Array.from(Array(10000).keys())
-
-nouns.forEach(noun => {
-  verbs.forEach(verb => {
-    runProgram([...originalProgramCodes], noun, verb)
-  })
-})
-
-/* runProgram([...originalProgramCodes], 12, 2) */
