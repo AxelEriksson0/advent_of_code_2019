@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 const __dirname = path.resolve()
 
-/* const input = fs.readFileSync(path.resolve(__dirname, 'day_5/day_5_input'), 'utf8')
- */const input = fs.readFileSync('./day_5_input', 'utf8')
+/* const input = fs.readFileSync(path.resolve(__dirname, 'day_5/day_5_input'), 'utf8') */
+const input = fs.readFileSync('./day_5_input', 'utf8')
 const programCodes = input.toString().split(',').map(Number)
 
 const runProgram = (programCodes, input) => {
@@ -12,8 +12,6 @@ const runProgram = (programCodes, input) => {
       console.log('Encountered opCode 99. Exiting...')
       break
     }
-
-    console.log(i)
 
     let opCode = programCodes[i]
     let value1 = programCodes[programCodes[i + 1]]
@@ -24,9 +22,9 @@ const runProgram = (programCodes, input) => {
       const instructions = programCodes[i].toString().split('').map(Number)
       opCode = instructions.slice(-1)[0]
 
-      if (opCode !== 1 && opCode !== 2 && opCode !== 3 && opCode !== 4 && opCode !== 99) {
-        i += 4
-        continue
+      if (opCode !== 1 && opCode !== 2 && opCode !== 3 && opCode !== 4 && opCode !== 5 && opCode !== 6 && opCode !== 7 && opCode !== 8 && opCode !== 99) {
+        console.log('Bad opcode: ', opCode)
+        break
       }
 
       if (instructions.length === 3) {
@@ -44,6 +42,11 @@ const runProgram = (programCodes, input) => {
       }
     }
 
+    if (opCode !== 1 && opCode !== 2 && opCode !== 3 && opCode !== 4 && opCode !== 5 && opCode !== 6 && opCode !== 7 && opCode !== 8 && opCode !== 99) {
+      console.log('Bad opcode: ', opCode)
+      break
+    }
+
     if (opCode === 1) {
       programCodes[positionToChange] = value1 + value2
       i += 4
@@ -57,7 +60,7 @@ const runProgram = (programCodes, input) => {
     }
 
     if (opCode === 3) {
-      programCodes[i + 1] = input
+      programCodes[programCodes[i + 1]] = input
       i += 2
       continue
     }
@@ -68,7 +71,41 @@ const runProgram = (programCodes, input) => {
       i += 2
       continue
     }
+
+    if (opCode === 5) {
+      if (value1 !== 0) {
+        i = value2
+      } else {
+        i += 3
+      }
+    }
+
+    if (opCode === 6) {
+      if (value1 === 0) {
+        i = value2
+      } else {
+        i += 3
+      }
+    }
+
+    if (opCode === 7) {
+      if (value1 < value2) {
+        programCodes[positionToChange] = 1
+      } else {
+        programCodes[positionToChange] = 0
+      }
+      i += 4
+    }
+
+    if (opCode === 8) {
+      if (value1 === value2) {
+        programCodes[positionToChange] = 1
+      } else {
+        programCodes[positionToChange] = 0
+      }
+      i += 4
+    }
   }
 }
 
-runProgram(programCodes, 1)
+runProgram(programCodes, 5)
