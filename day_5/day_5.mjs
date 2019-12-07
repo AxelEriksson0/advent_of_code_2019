@@ -1,7 +1,7 @@
 import fs from 'fs'
-import path from 'path'
-const __dirname = path.resolve()
 
+/* import path from 'path' */
+/* const __dirname = path.resolve() */
 /* const input = fs.readFileSync(path.resolve(__dirname, 'day_5/day_5_input'), 'utf8') */
 const input = fs.readFileSync('./day_5_input', 'utf8')
 const programCodes = input.toString().split(',').map(Number)
