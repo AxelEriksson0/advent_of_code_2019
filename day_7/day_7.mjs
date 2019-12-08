@@ -114,24 +114,26 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
   return outputSignal
 }
 
-const getAllPermutations = xs => {
+const getAllPermutations = arrayToPermutate => {
   const allPermutations = []
-  for (let i = 0; i < xs.length; i = i + 1) {
-    const rest = getAllPermutations(xs.slice(0, i).concat(xs.slice(i + 1)))
+  for (let i = 0; i < arrayToPermutate.length; i = i + 1) {
+    const rest = getAllPermutations(arrayToPermutate.slice(0, i).concat(arrayToPermutate.slice(i + 1)))
     if (!rest.length) {
-      allPermutations.push([xs[i]])
+      allPermutations.push([arrayToPermutate[i]])
     } else {
       for (let j = 0; j < rest.length; j = j + 1) {
-        allPermutations.push([xs[i]].concat(rest[j]))
+        allPermutations.push([arrayToPermutate[i]].concat(rest[j]))
       }
     }
   }
   return allPermutations
 }
 
-const allPhaseSettings = getAllPermutations([0, 1, 2, 3, 4])
+/// //////////
+/// PART 1 ///
+/// //////////
+/* const allPhaseSettings = getAllPermutations([0, 1, 2, 3, 4])
 let inputSignal = 0
-inputSignal = 0
 let highestOutputSignal = 0
 allPhaseSettings.forEach(phaseSettings => {
   phaseSettings.forEach(phaseSetting => {
@@ -142,5 +144,71 @@ allPhaseSettings.forEach(phaseSettings => {
   }
   inputSignal = 0
 })
+console.log(`Final output: ${highestOutputSignal}`) */
+/// //////////
+/// PART 1 ///
+/// /////////
 
+let inputSignal = 0
+let highestOutputSignal = 0
+const phaseSetting = [9, 7, 8, 5, 6]
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
+console.log(`Final output: ${highestOutputSignal}`)
+
+phaseSetting.forEach(phaseSetting => {
+  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+})
+if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
 console.log(`Final output: ${highestOutputSignal}`)
