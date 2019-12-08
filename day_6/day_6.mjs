@@ -11,7 +11,7 @@ orbitRelationships.forEach(orbit => {
   if (!{}.hasOwnProperty.call(orbits, parent)) {
     orbits[parent] = []
   }
-  orbits[parent].push(child)
+  orbits[parent].push(child.trim())
 })
 
 const countOrbits = children => {
@@ -28,10 +28,55 @@ const countOrbits = children => {
   }
 }
 
-Object.keys(orbits).forEach(parent => {
+/* Object.keys(orbits).forEach(parent => {
   const children = orbits[parent]
   const directOrbits = children.length
   numberOfOrbits += directOrbits
 
   countOrbits(children)
+}) */
+
+const rootToYOU = 0
+const rootToYOUOrbits = []
+const rootToSAN = 0
+const rootToSANOrbits = []
+
+const rootToTarget = (target, targetOrbit, propertyToFind) => {
+  Object.entries(orbits).forEach(orbit => {
+    const [newPropertyToFind, children] = [...orbit]
+    if (children.includes(propertyToFind)) {
+      target += 1
+      targetOrbit.push(propertyToFind)
+
+      rootToTarget(target, targetOrbit, newPropertyToFind)
+    }
+  })
+}
+
+Object.entries(orbits).forEach(orbit => {
+  const [parentProperty, children] = [...orbit]
+  if (children.includes('YOU')) {
+    rootToTarget(rootToYOU, rootToYOUOrbits, parentProperty)
+  }
 })
+
+Object.entries(orbits).forEach(orbit => {
+  const [parentProperty, children] = [...orbit]
+  if (children.includes('SAN')) {
+    rootToTarget(rootToSAN, rootToSANOrbits, parentProperty)
+  }
+})
+
+let commonOrbit = null
+
+for (let i = 0; i < rootToYOUOrbits.length; i++) {
+  if (rootToSANOrbits.includes(rootToYOUOrbits[i])) {
+    commonOrbit = rootToYOUOrbits[i]
+    break
+  }
+}
+
+const indexOfFirst = rootToYOUOrbits.indexOf(commonOrbit)
+const indexOfSecond = rootToSANOrbits.indexOf(commonOrbit)
+
+console.log('Orbits separating them: ', indexOfFirst + indexOfSecond)
