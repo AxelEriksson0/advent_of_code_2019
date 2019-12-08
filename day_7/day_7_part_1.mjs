@@ -5,6 +5,13 @@ import fs from 'fs'
 const input = fs.readFileSync('./day_7_input', 'utf8')
 const programCodes = input.toString().split(',').map(Number)
 
+const input43210 = fs.readFileSync('./day_7_input_part_1_43210', 'utf8')
+const programCodes43210 = input43210.toString().split(',').map(Number)
+const input54321 = fs.readFileSync('./day_7_input_part_1_54321', 'utf8')
+const programCodes54321 = input54321.toString().split(',').map(Number)
+const input65210 = fs.readFileSync('./day_7_input_part_1_65210', 'utf8')
+const programCodes65210 = input65210.toString().split(',').map(Number)
+
 const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
   let outputSignal = null
   let firstTimeOpcode3 = true
@@ -118,13 +125,7 @@ const getAllPermutations = arrayToPermutate => {
   const allPermutations = []
   for (let i = 0; i < arrayToPermutate.length; i = i + 1) {
     const rest = getAllPermutations(arrayToPermutate.slice(0, i).concat(arrayToPermutate.slice(i + 1)))
-    if (!rest.length) {
-      allPermutations.push([arrayToPermutate[i]])
-    } else {
-      for (let j = 0; j < rest.length; j = j + 1) {
-        allPermutations.push([arrayToPermutate[i]].concat(rest[j]))
-      }
-    }
+    if (!rest.length) { allPermutations.push([arrayToPermutate[i]]) } else { for (let j = 0; j < rest.length; j = j + 1) { allPermutations.push([arrayToPermutate[i]].concat(rest[j])) } }
   }
   return allPermutations
 }
@@ -142,3 +143,28 @@ allPhaseSettings.forEach(phaseSettings => {
   inputSignal = 0
 })
 console.log(`Final output: ${highestOutputSignal}`)
+
+/// //////////////
+/// Test cases ///
+/// //////////////
+
+/* const phaseSetting43210 = [4, 3, 2, 1, 0]
+let inputSignal43210 = 0
+phaseSetting43210.forEach(phaseSetting => {
+  inputSignal43210 = IntcodeComputer(programCodes43210, phaseSetting, inputSignal43210)
+})
+console.log(`Final output 43210: ${inputSignal43210}`)
+
+const phaseSetting54321 = [0, 1, 2, 3, 4]
+let inputSignal54321 = 0
+phaseSetting54321.forEach(phaseSetting => {
+  inputSignal54321 = IntcodeComputer(programCodes54321, phaseSetting, inputSignal54321)
+})
+console.log(`Final output 54321: ${inputSignal54321}`)
+
+const phaseSetting65210 = [1, 0, 4, 3, 2]
+let inputSignal65210 = 0
+phaseSetting65210.forEach(phaseSetting => {
+  inputSignal65210 = IntcodeComputer(programCodes65210, phaseSetting, inputSignal65210)
+})
+console.log(`Final output 65210: ${inputSignal65210}`) */

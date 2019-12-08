@@ -2,26 +2,25 @@ import fs from 'fs'
 /* import path from 'path' */
 /* const __dirname = path.resolve() */
 /* const input = fs.readFileSync(path.resolve(__dirname, 'day_7/day_7_input'), 'utf8') */
-const input = fs.readFileSync('./day_7_input', 'utf8')
+const input = fs.readFileSync('./day_7_input_139629729', 'utf8')
 const programCodes = input.toString().split(',').map(Number)
 
 const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
   let outputSignal = null
   let firstTimeOpcode3 = true
-  for (let i = 0; i < programCodes.length;) {
-    if (programCodes[i] === 99) {
-      console.log('Encountered opCode 99. Exiting...')
-      break
-    }
 
+  for (let i = 0; i < programCodes.length;) {
     let opCode = programCodes[i]
+
     let value1 = programCodes[programCodes[i + 1]]
     let value2 = programCodes[programCodes[i + 2]]
-    const positionToChange = programCodes[i + 3]
 
     if (programCodes[i] >= 100) {
       const instructions = programCodes[i].toString().split('').map(Number)
       opCode = instructions.slice(-1)[0]
+      if (opCode === 9 && instructions.slice(-2)[0] === 9) {
+        opCode = 99
+      }
 
       if (instructions.length === 3) {
         if (instructions[0] === 1) {
@@ -38,18 +37,25 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
       }
     }
 
+    if (opCode === 99) {
+      console.log('Encountered opCode 99. Exiting...')
+      break
+    }
+
     if (opCode !== 1 && opCode !== 2 && opCode !== 3 && opCode !== 4 && opCode !== 5 && opCode !== 6 && opCode !== 7 && opCode !== 8 && opCode !== 99) {
       console.log('Bad opcode: ', opCode)
       break
     }
 
     if (opCode === 1) {
+      const positionToChange = programCodes[i + 3]
       programCodes[positionToChange] = value1 + value2
       i += 4
       continue
     }
 
     if (opCode === 2) {
+      const positionToChange = programCodes[i + 3]
       programCodes[positionToChange] = value1 * value2
       i += 4
       continue
@@ -94,20 +100,14 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
     }
 
     if (opCode === 7) {
-      if (value1 < value2) {
-        programCodes[positionToChange] = 1
-      } else {
-        programCodes[positionToChange] = 0
-      }
+      const positionToChange = programCodes[i + 3]
+      value1 < value2 ? programCodes[positionToChange] = 1 : programCodes[positionToChange] = 0
       i += 4
     }
 
     if (opCode === 8) {
-      if (value1 === value2) {
-        programCodes[positionToChange] = 1
-      } else {
-        programCodes[positionToChange] = 0
-      }
+      const positionToChange = programCodes[i + 3]
+      value1 === value2 ? programCodes[positionToChange] = 1 : programCodes[positionToChange] = 0
       i += 4
     }
   }
@@ -152,36 +152,6 @@ console.log(`Final output: ${highestOutputSignal}`) */
 let inputSignal = 0
 let highestOutputSignal = 0
 const phaseSetting = [9, 7, 8, 5, 6]
-
-phaseSetting.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
-})
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`)
-
-phaseSetting.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
-})
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`)
-
-phaseSetting.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
-})
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`)
-
-phaseSetting.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
-})
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`)
-
-phaseSetting.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
-})
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`)
 
 phaseSetting.forEach(phaseSetting => {
   inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
