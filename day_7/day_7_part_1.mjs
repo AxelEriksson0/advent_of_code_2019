@@ -135,7 +135,7 @@ let inputSignal = 0
 let highestOutputSignal = 0
 allPhaseSettings.forEach(phaseSettings => {
   phaseSettings.forEach(phaseSetting => {
-    inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+    inputSignal = IntcodeComputer([...programCodes], phaseSetting, inputSignal)
   })
   if (highestOutputSignal < inputSignal) {
     highestOutputSignal = inputSignal
