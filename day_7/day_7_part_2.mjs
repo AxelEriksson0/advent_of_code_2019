@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 const __dirname = path.resolve()
 
-/* const input = fs.readFileSync('./day_7_input', 'utf8')
-const programCodes = input.toString().split(',').map(Number) */
+const input = fs.readFileSync('./day_7_input', 'utf8')
+const programCodes = input.toString().split(',').map(Number)
 
 /* const input18216 = fs.readFileSync(path.resolve(__dirname, 'day_7/day_7_input_part_2_18216'), 'utf8') */
 const input18216 = fs.readFileSync('./day_7_input_part_2_18216', 'utf8')
@@ -11,6 +11,8 @@ const programCodes18216 = input18216.toString().split(',').map(Number)
 
 const input139629729 = fs.readFileSync('./day_7_input_part_2_139629729', 'utf8')
 const programCodes139629729 = input139629729.toString().split(',').map(Number)
+
+let test = 0
 
 const IntcodeComputer = (programCodes, phaseSetting, inputSignal, loopIndex) => {
   let outputSignal = 0
@@ -80,6 +82,9 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal, loopIndex) => 
       const positionToOutput = programCodes[i + 1]
       console.log('Opcode 4: ', programCodes[positionToOutput])
       outputSignal = programCodes[positionToOutput]
+      if (test < outputSignal) {
+        test = outputSignal
+      }
       i += 2
       newIndex = i
       break
@@ -129,29 +134,42 @@ const feedbackLoop = (amplifiers, highestOutputSignal, inputSignal) => {
     highestOutputSignal = inputSignal
     feedbackLoop(amplifiers, highestOutputSignal, inputSignal)
   }
+  return highestOutputSignal
 }
 
-/* let inputSignal = 0
-let highestOutputSignal = 0
-const phaseSequence = [9, 7, 8, 5, 6]
+const allPhaseSequences = getAllPermutations([5, 6, 7, 8, 9])
+let highestOutputSignalAll = 0
 
-phaseSequence.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
-})
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`)
+allPhaseSequences.forEach(phaseSequence => {
+  let inputSignal = 0
+  let highestOutputSignal = 0
+  const amplifiers = [
+    { loopIndex: 0, phaseSetting: phaseSequence[0], programCode: [...programCodes] },
+    { loopIndex: 0, phaseSetting: phaseSequence[1], programCode: [...programCodes] },
+    { loopIndex: 0, phaseSetting: phaseSequence[2], programCode: [...programCodes] },
+    { loopIndex: 0, phaseSetting: phaseSequence[3], programCode: [...programCodes] },
+    { loopIndex: 0, phaseSetting: phaseSequence[4], programCode: [...programCodes] }
+  ]
 
-phaseSequence.forEach(phaseSetting => {
-  inputSignal = IntcodeComputer(programCodes, phaseSetting, inputSignal)
+  amplifiers.forEach(amplifier => {
+    [inputSignal, amplifier.loopIndex] = IntcodeComputer(amplifier.programCode, amplifier.phaseSetting, inputSignal, amplifier.loopIndex)
+  })
+  if (highestOutputSignal < inputSignal) {
+    highestOutputSignal = inputSignal
+  }
+  highestOutputSignal = feedbackLoop(amplifiers, highestOutputSignal, inputSignal)
+  if (highestOutputSignalAll < highestOutputSignal) {
+    highestOutputSignalAll = highestOutputSignal
+  }
 })
-if (highestOutputSignal < inputSignal) { highestOutputSignal = inputSignal }
-console.log(`Final output: ${highestOutputSignal}`) */
+
+console.log('Highest output signal: ', test)
 
 /// //////////////
 /// Test cases ///
 /// //////////////
 
-let inputSignal18216 = 0
+/* let inputSignal18216 = 0
 let highestOutputSignal18216 = 0
 const amplifiers18216 = [
   { loopIndex: 0, phaseSetting: 9, programCode: [...programCodes18216] },
@@ -188,3 +206,4 @@ if (highestOutputSignal139629729 < inputSignal139629729) {
 }
 
 feedbackLoop(amplifiers139629729, highestOutputSignal139629729, inputSignal139629729)
+ */
