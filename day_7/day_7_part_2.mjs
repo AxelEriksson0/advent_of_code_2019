@@ -121,6 +121,16 @@ const getAllPermutations = arrayToPermutate => {
   return allPermutations
 }
 
+const feedbackLoop = (amplifiers, highestOutputSignal, inputSignal) => {
+  amplifiers.forEach(amplifier => {
+    [inputSignal, amplifier.loopIndex] = IntcodeComputer(amplifier.programCode, inputSignal, inputSignal, amplifier.loopIndex)
+  })
+  if (highestOutputSignal < inputSignal) {
+    highestOutputSignal = inputSignal
+    feedbackLoop(amplifiers, highestOutputSignal, inputSignal)
+  }
+}
+
 /* let inputSignal = 0
 let highestOutputSignal = 0
 const phaseSequence = [9, 7, 8, 5, 6]
@@ -141,47 +151,40 @@ console.log(`Final output: ${highestOutputSignal}`) */
 /// Test cases ///
 /// //////////////
 
-/* let inputSignal18216 = 0
-const phaseSequence18216 = [9, 7, 8, 5, 6]
-phaseSequence18216.forEach(phaseSetting => {
-  inputSignal18216 = IntcodeComputer(programCodes18216, phaseSetting, inputSignal18216)
-})
+let inputSignal18216 = 0
+let highestOutputSignal18216 = 0
+const amplifiers18216 = [
+  { loopIndex: 0, phaseSetting: 9, programCode: [...programCodes18216] },
+  { loopIndex: 0, phaseSetting: 7, programCode: [...programCodes18216] },
+  { loopIndex: 0, phaseSetting: 8, programCode: [...programCodes18216] },
+  { loopIndex: 0, phaseSetting: 5, programCode: [...programCodes18216] },
+  { loopIndex: 0, phaseSetting: 6, programCode: [...programCodes18216] }
+]
 
-console.log(inputSignal18216) */
+amplifiers18216.forEach(amplifier => {
+  [inputSignal18216, amplifier.loopIndex] = IntcodeComputer(amplifier.programCode, amplifier.phaseSetting, inputSignal18216, amplifier.loopIndex)
+})
+if (highestOutputSignal18216 < inputSignal18216) {
+  highestOutputSignal18216 = inputSignal18216
+}
+
+feedbackLoop(amplifiers18216, highestOutputSignal18216, inputSignal18216)
 
 let inputSignal139629729 = 0
-const phaseSequence139629729 = [9, 8, 7, 6, 5]
-const amplifier1 = [...programCodes139629729]
-const amplifier2 = [...programCodes139629729]
-const amplifier3 = [...programCodes139629729]
-const amplifier4 = [...programCodes139629729]
-const amplifier5 = [...programCodes139629729]
-const amplifiers = [amplifier1, amplifier2, amplifier3, amplifier4, amplifier5]
-const loopIndexes = [0, 0, 0, 0, 0]
+let highestOutputSignal139629729 = 0
+const amplifiers139629729 = [
+  { loopIndex: 0, phaseSetting: 9, programCode: [...programCodes139629729] },
+  { loopIndex: 0, phaseSetting: 8, programCode: [...programCodes139629729] },
+  { loopIndex: 0, phaseSetting: 7, programCode: [...programCodes139629729] },
+  { loopIndex: 0, phaseSetting: 6, programCode: [...programCodes139629729] },
+  { loopIndex: 0, phaseSetting: 5, programCode: [...programCodes139629729] }
+]
 
-phaseSequence139629729.forEach((phaseSetting, index) => {
-  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], phaseSetting, inputSignal139629729, loopIndexes[index])
+amplifiers139629729.forEach(amplifier => {
+  [inputSignal139629729, amplifier.loopIndex] = IntcodeComputer(amplifier.programCode, amplifier.phaseSetting, inputSignal139629729, amplifier.loopIndex)
 })
+if (highestOutputSignal139629729 < inputSignal139629729) {
+  highestOutputSignal139629729 = inputSignal139629729
+}
 
-phaseSequence139629729.forEach((phaseSetting, index) => {
-  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
-})
-
-phaseSequence139629729.forEach((phaseSetting, index) => {
-  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
-})
-
-phaseSequence139629729.forEach((phaseSetting, index) => {
-  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
-})
-
-phaseSequence139629729.forEach((phaseSetting, index) => {
-  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
-})
-
-phaseSequence139629729.forEach((phaseSetting, index) => {
-  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
-})
-
-console.log(inputSignal139629729)
-console.log(loopIndexes)
+feedbackLoop(amplifiers139629729, highestOutputSignal139629729, inputSignal139629729)
