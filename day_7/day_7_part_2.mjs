@@ -9,11 +9,15 @@ const programCodes = input.toString().split(',').map(Number) */
 const input18216 = fs.readFileSync('./day_7_input_part_2_18216', 'utf8')
 const programCodes18216 = input18216.toString().split(',').map(Number)
 
-const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
+const input139629729 = fs.readFileSync('./day_7_input_part_2_139629729', 'utf8')
+const programCodes139629729 = input139629729.toString().split(',').map(Number)
+
+const IntcodeComputer = (programCodes, phaseSetting, inputSignal, loopIndex) => {
   let outputSignal = 0
+  let newIndex = 0
   let firstTimeOpcode3 = true
 
-  for (let i = 0; i < programCodes.length;) {
+  for (let i = loopIndex; i < programCodes.length;) {
     let opCode = programCodes[i]
 
     let value1 = programCodes[programCodes[i + 1]]
@@ -77,7 +81,8 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
       console.log('Opcode 4: ', programCodes[positionToOutput])
       outputSignal = programCodes[positionToOutput]
       i += 2
-      continue
+      newIndex = i
+      break
     }
 
     if (opCode === 5) {
@@ -104,7 +109,7 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal) => {
       continue
     }
   }
-  return outputSignal
+  return [outputSignal, newIndex]
 }
 
 const getAllPermutations = arrayToPermutate => {
@@ -136,10 +141,47 @@ console.log(`Final output: ${highestOutputSignal}`) */
 /// Test cases ///
 /// //////////////
 
-let inputSignal18216 = 0
+/* let inputSignal18216 = 0
 const phaseSequence18216 = [9, 7, 8, 5, 6]
 phaseSequence18216.forEach(phaseSetting => {
-  inputSignal18216 = IntcodeComputer([...programCodes18216], phaseSetting, inputSignal18216)
+  inputSignal18216 = IntcodeComputer(programCodes18216, phaseSetting, inputSignal18216)
 })
 
-console.log(inputSignal18216)
+console.log(inputSignal18216) */
+
+let inputSignal139629729 = 0
+const phaseSequence139629729 = [9, 8, 7, 6, 5]
+const amplifier1 = [...programCodes139629729]
+const amplifier2 = [...programCodes139629729]
+const amplifier3 = [...programCodes139629729]
+const amplifier4 = [...programCodes139629729]
+const amplifier5 = [...programCodes139629729]
+const amplifiers = [amplifier1, amplifier2, amplifier3, amplifier4, amplifier5]
+const loopIndexes = [0, 0, 0, 0, 0]
+
+phaseSequence139629729.forEach((phaseSetting, index) => {
+  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], phaseSetting, inputSignal139629729, loopIndexes[index])
+})
+
+phaseSequence139629729.forEach((phaseSetting, index) => {
+  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
+})
+
+phaseSequence139629729.forEach((phaseSetting, index) => {
+  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
+})
+
+phaseSequence139629729.forEach((phaseSetting, index) => {
+  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
+})
+
+phaseSequence139629729.forEach((phaseSetting, index) => {
+  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
+})
+
+phaseSequence139629729.forEach((phaseSetting, index) => {
+  [inputSignal139629729, loopIndexes[index]] = IntcodeComputer(amplifiers[index], inputSignal139629729, inputSignal139629729, loopIndexes[index])
+})
+
+console.log(inputSignal139629729)
+console.log(loopIndexes)
