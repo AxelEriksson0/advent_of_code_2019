@@ -12,7 +12,7 @@ const programCodes18216 = input18216.toString().split(',').map(Number)
 const input139629729 = fs.readFileSync('./day_7_input_part_2_139629729', 'utf8')
 const programCodes139629729 = input139629729.toString().split(',').map(Number)
 
-let test = 0
+let highestOutputSignalAll = 0
 
 const IntcodeComputer = (programCodes, phaseSetting, inputSignal, loopIndex) => {
   let outputSignal = 0
@@ -82,8 +82,8 @@ const IntcodeComputer = (programCodes, phaseSetting, inputSignal, loopIndex) => 
       const positionToOutput = programCodes[i + 1]
       console.log('Opcode 4: ', programCodes[positionToOutput])
       outputSignal = programCodes[positionToOutput]
-      if (test < outputSignal) {
-        test = outputSignal
+      if (highestOutputSignalAll < outputSignal) {
+        highestOutputSignalAll = outputSignal
       }
       i += 2
       newIndex = i
@@ -138,7 +138,6 @@ const feedbackLoop = (amplifiers, highestOutputSignal, inputSignal) => {
 }
 
 const allPhaseSequences = getAllPermutations([5, 6, 7, 8, 9])
-let highestOutputSignalAll = 0
 
 allPhaseSequences.forEach(phaseSequence => {
   let inputSignal = 0
@@ -157,13 +156,10 @@ allPhaseSequences.forEach(phaseSequence => {
   if (highestOutputSignal < inputSignal) {
     highestOutputSignal = inputSignal
   }
-  highestOutputSignal = feedbackLoop(amplifiers, highestOutputSignal, inputSignal)
-  if (highestOutputSignalAll < highestOutputSignal) {
-    highestOutputSignalAll = highestOutputSignal
-  }
+  feedbackLoop(amplifiers, highestOutputSignal, inputSignal)
 })
 
-console.log('Highest output signal: ', test)
+console.log('Highest output signal: ', highestOutputSignalAll)
 
 /// //////////////
 /// Test cases ///
