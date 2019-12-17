@@ -1,101 +1,67 @@
 import fs from 'fs'
-
-/* const inputs = fs.readFileSync('./day_14_input', 'utf8') */
-const inputs = fs.readFileSync('./day_14_input_31', 'utf8')
+const inputs = fs.readFileSync('./day_14_input', 'utf8')
+// const inputs = fs.readFileSync('./day_14_input_custom', 'utf8')
+// const inputs = fs.readFileSync('./day_14_input_31', 'utf8')
 // const inputs = fs.readFileSync('./day_14_input_165', 'utf8')
 // const inputs = fs.readFileSync('./day_14_input_13312', 'utf8')
 // const inputs = fs.readFileSync('./day_14_input_180697', 'utf8')
+// const inputs = fs.readFileSync('./day_14_input_2210736', 'utf8')
 
 const listOfReactions = inputs
   .toString()
   .split('\n')
   .map(input => input.split(/[,(=>)]+/))
   .map(input => {
-    const [amount, outputChemical] = input.splice(-1)[0].trim().split(' ')
+    const [quantity, outputChemical] = input.splice(-1)[0].trim().split(' ')
     return {
       inputChemicals: input.map(material => {
-        const [amount, name] = material.trim().split(' ')
+        const [quantity, name] = material.trim().split(' ')
         return {
           name: name,
-          amount: Number(amount)
+          quantity: Number(quantity)
         }
       }),
       outputChemical: outputChemical,
-      amount: Number(amount)
+      quantity: Number(quantity)
     }
   })
 
-const listOfOREReactions = listOfReactions.filter(reaction => {
-  return reaction.inputChemicals[0].name === 'ORE'
-})
+const leftOvers = listOfReactions.map(reaction => ({
+  name: reaction.outputChemical,
+  quantity: 0
+}))
 
-const amountOfORE = listOfOREReactions.map(reaction => {
-  return {
-    amountOfORENeeded: reaction.inputChemicals[0].amount,
-    amountOfORE: 0,
-    outputChemical: reaction.outputChemical,
-    amountOfOutputChemical: reaction.amount
+const calculcateAmountOfOreNeeded = (reaction, leftOvers, materialNeeded) => {
+  let ore = 0
+  let materialNeededAfterLeftOver = 0
+  const leftOver = leftOvers.find(leftOver => leftOver.name === reaction.outputChemical)
+
+  if (leftOver.quantity === 0) {
+    materialNeededAfterLeftOver = materialNeeded
+  } else if (leftOver.quantity > materialNeeded) {
+    leftOver.quantity -= materialNeeded
+    materialNeededAfterLeftOver = 0
+  } else {
+    materialNeeded -= leftOver.quantity
+    leftOver.quantity = 0
+    materialNeededAfterLeftOver = materialNeeded
   }
-})
 
-let materialNeeded = [{ name: 'FUEL', amount: 1 }]
-let newMaterialNeeded = []
-const listOfAllMaterialNeeded = {}
-const leftOvers = {}
+  const multiplier = Math.ceil(materialNeededAfterLeftOver / reaction.quantity)
+  leftOver.quantity += multiplier * reaction.quantity - materialNeededAfterLeftOver
 
-const findMaterialNeeded = (materialNeeded, newMaterialNeeded) => {
-  materialNeeded.forEach(material => {
-    const reaction = listOfReactions.find(reaction => reaction.outputChemical === material.name)
-    reaction.inputChemicals.forEach(inputChemical => {
-      if (inputChemical.name === 'ORE') {
-        const OREReaction = amountOfORE.find(reaction => reaction.outputChemical === material.name)
-        const multiplier = material.amount / OREReaction.amountOfOutputChemical
-        OREReaction.amountOfORE += multiplier * OREReaction.amountOfORENeeded
-      } else {
-        const multiplier = material.amount / reaction.amount
-        newMaterialNeeded.push({
-          name: inputChemical.name,
-          amount: inputChemical.amount * multiplier
-        })
-        if (listOfAllMaterialNeeded[inputChemical.name]) {
-          listOfAllMaterialNeeded[inputChemical.name] += inputChemical.amount * multiplier
-        } else {
-          listOfAllMaterialNeeded[inputChemical.name] = inputChemical.amount * multiplier
-        }
-      }
-    })
+  reaction.inputChemicals.forEach(inputChemical => {
+    if (inputChemical.name === 'ORE') {
+      ore += inputChemical.quantity * multiplier
+    } else {
+      const newReaction = listOfReactions.find(reaction => reaction.outputChemical === inputChemical.name)
+      ore += calculcateAmountOfOreNeeded(newReaction, leftOvers, inputChemical.quantity * multiplier)
+    }
   })
-  return [newMaterialNeeded, []]
+
+  return ore
 }
 
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE);
-[materialNeeded, newMaterialNeeded] = findMaterialNeeded(materialNeeded, newMaterialNeeded, amountOfORE)
-console.log(amountOfORE)
-
-let oreFinal = 0
-
-amountOfORE.forEach(OREReaction => {
-  const multiplier = Math.ceil(OREReaction.amountOfORE / OREReaction.amountOfORENeeded)
-  oreFinal += multiplier * OREReaction.amountOfORENeeded
-})
-
-console.log(oreFinal)
-console.log(listOfAllMaterialNeeded)
+const fuelReaction = listOfReactions.find(reaction => reaction.outputChemical === 'FUEL')
+const oreNeeded = calculcateAmountOfOreNeeded(fuelReaction, leftOvers, fuelReaction.quantity)
+console.log(`Amount of ORE needed: ${oreNeeded}`)
